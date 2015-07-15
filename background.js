@@ -19,16 +19,14 @@ function moveTab(tab) {
         return;
       }
       try {
-        chrome.tabs.move(tabs[0].id, {
+        chrome.tabs.create({
           'windowId': savedToWindow,
-          'index': -1
-        }, function(tabs) {
-          chrome.tabs.update(tabs.id, {'active': true}, function() {
-            chrome.windows.update(savedToWindow, {'focused': true}, function() {
-              console.log('Done!')
-            });
-          });
+          'url': tabs[0].url,
         });
+        
+        chrome.windows.update(savedToWindow, {'focused': true});
+        chrome.tabs.remove(tabs[0].id);
+        
       } catch (e) {
         alert(e);
       }
